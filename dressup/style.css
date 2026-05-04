@@ -1,0 +1,35 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  background: #f0f0f0;
+}
+
+#canvas-area {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  margin: 20px auto;
+  background: #fff;
+  overflow: hidden;
+}
+
+#canvas-area img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* 重なり順 */
+#base { z-index: 0; }
+#bottom { z-index: 1; }
+#top { z-index: 2; }
+
+.controls {
+  margin: 10px;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+}
