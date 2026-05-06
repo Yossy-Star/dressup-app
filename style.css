@@ -1,0 +1,86 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  background: #f0f0f0;
+}
+
+/* 横並び */
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* 左コントロール */
+.side-control {
+  margin-right: 10px;
+}
+
+.adjust-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px 0;
+}
+
+.adjust-row button {
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+}
+
+/* 画像エリア */
+#canvas-area {
+  position: relative;
+  width: 300px;
+  aspect-ratio: 680 / 1528;
+  background: #fff;
+  overflow: hidden;
+}
+
+#canvas-area img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* レイヤー */
+#base { z-index: 0; }
+#bottom { z-index: 1; }
+#top { z-index: 2; }
+
+/* ボタン配置 */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+/* 決定（赤・大） */
+.decide {
+  background: #e74c3c;
+  color: #fff;
+  font-size: 18px;
+  padding: 15px 40px;
+  border-radius: 8px;
+}
+
+/* もう一回（緑・丸） */
+.reset {
+  background: #2ecc71;
+  color: #fff;
+  font-size: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+/* その他 */
+button {
+  border: none;
+}
