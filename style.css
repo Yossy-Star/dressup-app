@@ -1,0 +1,214 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  background: #f0f0f0;
+
+  margin: 0;
+  padding: 6px;
+
+  overflow-x: hidden;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  gap: 6px;
+
+  flex-wrap: nowrap;
+}
+
+.side-control {
+  margin-right: 4px;
+}
+
+/* ===== X/Yだけ横並び ===== */
+.xy-group {
+  display: flex;
+  justify-content: center;
+
+  gap: 4px;
+
+  margin-top: 4px;
+}
+
+.xy-group .adjust-row {
+  margin: 0;
+}
+
+/* ===== top bottom base は縦 ===== */
+.adjust-row,
+.select-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 2px 0;
+}
+
+.adjust-row button,
+.select-row button {
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+}
+
+.select-row span {
+  width: 72px;
+  display: inline-block;
+
+  font-size: 13px;
+}
+
+/* サイズだけ小さめ */
+.size-row span {
+  font-size: 11px;
+}
+
+h4 {
+  margin: 6px 0 2px;
+  font-size: 14px;
+}
+
+h4 button {
+  margin-left: 6px;
+}
+
+#canvas-area {
+  position: relative;
+
+  width: min(96vw, 520px);
+  height: auto;
+
+  aspect-ratio: 680 / 1528;
+
+  background: #fff;
+  overflow: hidden;
+}
+
+#canvas-area img {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+#base { z-index: 0; }
+#bottom { z-index: 1; }
+#top { z-index: 2; }
+
+/* ===== ボタンを画像のすぐ下 ===== */
+.controls {
+  display: flex;
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-top: 6px;
+}
+
+.decide {
+  background: #e74c3c;
+  color: #fff;
+
+  font-size: 16px;
+
+  padding: 12px 28px;
+
+  border-radius: 8px;
+}
+
+.reset {
+  background: #2ecc71;
+  color: #fff;
+
+  width: 46px;
+  height: 46px;
+
+  border-radius: 50%;
+}
+
+.all-reset {
+  background: #555;
+  color: #fff;
+
+  padding: 8px 16px;
+}
+
+button {
+  border: none;
+}
+
+/* ===== ズーム ===== */
+.zoom {
+  animation: zoomAnim 0.2s;
+}
+
+@keyframes zoomAnim {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ===== スマホ最適化 ===== */
+@media (max-width: 600px) {
+
+  .adjust-row button,
+  .select-row button {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .select-row span {
+    width: 64px;
+    font-size: 12px;
+  }
+
+  .decide {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+
+  .controls {
+    gap: 6px;
+  }
+
+  h4 {
+    font-size: 13px;
+  }
+}
+
+/* ===== ロード画面 ===== */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(255,255,255,0.95);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 99999;
+}
+
+.loading-text {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+}
