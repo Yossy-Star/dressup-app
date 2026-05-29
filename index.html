@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loading-screen">
+  <div class="loading-text">Loading...</div>
+</div>
+
+<div style="margin-bottom:10px;">
+  <input type="file" id="upload" accept="image/*">
+</div>
+
+<div class="main">
+
+  <div class="side-control">
+
+    <!-- ★全リセット（最上部） -->
+    <div style="display:flex; justify-content:center; margin-bottom:8px;">
+      <button class="all-reset" onclick="fullReset()">リセット</button>
+    </div>
+
+    <!-- BASE -->
+    <h4>BASE</h4>
+
+    <div class="xy-group">
+
+      <div class="adjust-row">
+        <button onclick="move('base','x',-2)">◁</button>
+        <span>X</span>
+        <button onclick="move('base','x',2)">▷</button>
+      </div>
+
+      <div class="adjust-row">
+        <button onclick="move('base','y',-2)">▲</button>
+        <span>Y</span>
+        <button onclick="move('base','y',2)">▼</button>
+      </div>
+
+    </div>
+
+    <div class="adjust-row size-row">
+      <button onclick="move('base','scale',-0.02)">－</button>
+      <span>サイズ</span>
+      <button onclick="move('base','scale',0.02)">＋</button>
+    </div>
+
+    <!-- TOP -->
+    <h4>
+      TOP
+      <button onclick="toggleLock('top')" id="lockTop">🔓</button>
+    </h4>
+
+    <div class="select-row">
+      <button onclick="prevTop()">◀</button>
+      <span id="topLabel">top (1)</span>
+      <button onclick="nextTop()">▶</button>
+    </div>
+
+    <div class="xy-group">
+
+      <div class="adjust-row">
+        <button onclick="move('top','x',-2)">◁</button>
+        <span>X</span>
+        <button onclick="move('top','x',2)">▷</button>
+      </div>
+
+      <div class="adjust-row">
+        <button onclick="move('top','y',-2)">▲</button>
+        <span>Y</span>
+        <button onclick="move('top','y',2)">▼</button>
+      </div>
+
+    </div>
+
+    <div class="adjust-row size-row">
+      <button onclick="move('top','scale',-0.02)">－</button>
+      <span>サイズ</span>
+      <button onclick="move('top','scale',0.02)">＋</button>
+    </div>
+
+    <div class="xy-group">
+
+      <div class="adjust-row">
+        <button onclick="changeTopColor(-30)">◀</button>
+        <span>色</span>
+        <button onclick="changeTopColor(30)">▶</button>
+      </div>
+
+      <div class="adjust-row">
+        <button onclick="changeTopBrightness(-0.1)">◀</button>
+        <span>明</span>
+        <button onclick="changeTopBrightness(0.1)">▶</button>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM -->
+    <h4>
+      BOTTOM
+      <button onclick="toggleLock('bottom')" id="lockBottom">🔓</button>
+    </h4>
+
+    <div class="select-row">
+      <button onclick="prevBottom()">◀</button>
+      <span id="bottomLabel">bottom (1)</span>
+      <button onclick="nextBottom()">▶</button>
+    </div>
+
+    <div class="xy-group">
+
+      <div class="adjust-row">
+        <button onclick="move('bottom','x',-2)">◁</button>
+        <span>X</span>
+        <button onclick="move('bottom','x',2)">▷</button>
+      </div>
+
+      <div class="adjust-row">
+        <button onclick="move('bottom','y',-2)">▲</button>
+        <span>Y</span>
+        <button onclick="move('bottom','y',2)">▼</button>
+      </div>
+
+    </div>
+
+    <div class="adjust-row size-row">
+      <button onclick="move('bottom','scale',-0.02)">－</button>
+      <span>サイズ</span>
+      <button onclick="move('bottom','scale',0.02)">＋</button>
+    </div>
+
+    <div class="xy-group">
+
+      <div class="adjust-row">
+        <button onclick="changeBottomColor(-30)">◀</button>
+        <span>色</span>
+        <button onclick="changeBottomColor(30)">▶</button>
+      </div>
+
+      <div class="adjust-row">
+        <button onclick="changeBottomBrightness(-0.1)">◀</button>
+        <span>明</span>
+        <button onclick="changeBottomBrightness(0.1)">▶</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="canvas-area">
+    <img id="base">
+    <img id="bottom">
+    <img id="top">
+  </div>
+
+</div>
+
+<!-- ★画像下：決定＋↻リセット＋滅ボタン -->
+<div class="controls">
+  <button class="decide" onclick="decide()">決定</button>
+  <button class="reset" onclick="reset()">↻</button>
+  <button
+    id="metsu-btn"
+    class="metsu"
+    onclick="sendMetsu()"
+    disabled
+    title="top 50 のときのみ使用可能"
+  >滅</button>
+</div>
+
+<style>
+/* ── 滅ボタン ── */
+.metsu {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  background: #888;
+  color: #ccc;
+  box-shadow: none;
+}
+.metsu:disabled {
+  background: #888;
+  color: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.metsu.active {
+  background: #e02020;
+  color: #fff;
+  box-shadow: 0 0 8px rgba(220, 30, 30, 0.7);
+}
+.metsu.active:hover {
+  background: #c01010;
+  transform: scale(1.08);
+}
+.metsu.active:active {
+  transform: scale(0.95);
+}
+</style>
+
+<!-- script.js より先に読み込む必要はないが、module は defer 相当なので問題なし -->
+<script src="script.js"></script>
+
+<script type="module">
+/* ════════════════════════════════════════════════════
+   滅ボタン用 Firebase 送信スクリプト
+   ════════════════════════════════════════════════════ */
+
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInAnonymously }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getDatabase, ref, set }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCCXS7VkDZywh84EtS3AtTUfdvOmdKEyaM",
+  authDomain: "musicar-c18e9.firebaseapp.com",
+  databaseURL: "https://musicar-c18e9-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "musicar-c18e9",
+  storageBucket: "musicar-c18e9.firebasestorage.app",
+  messagingSenderId: "546300872409",
+  appId: "1:546300872409:web:53b357be74d3e5a136e0c8"
+};
+
+const fbApp  = initializeApp(firebaseConfig, "kosode-app");
+const fbAuth = getAuth(fbApp);
+const fbDb   = getDatabase(fbApp);
+
+/* ── SHA-256 ── */
+async function sha256(msg) {
+  const buf  = new TextEncoder().encode(msg);
+  const hash = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hash))
+    .map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+let cachedHash = null;
+async function getPasswordHash() {
+  if (!cachedHash) cachedHash = await sha256('12345');
+  return cachedHash;
+}
+
+/* ── 滅ボタンの有効／無効切替（script.js の notifyTopChanged() から呼ばれる） ── */
+const metsuBtn = document.getElementById('metsu-btn');
+
+window.updateMetsuBtn = function(idx) {
+  // idx は 0 始まり → top50 = index 49
+  const isTop50 = (idx === 49);
+  metsuBtn.disabled = !isTop50;
+  metsuBtn.classList.toggle('active', isTop50);
+};
+
+/* ── Firebase 送信 ── */
+let metsuLock = false;
+window.sendMetsu = async function() {
+  if (metsuLock || metsuBtn.disabled) return;
+
+  metsuLock = true;
+  metsuBtn.textContent = '…';
+
+  try {
+    const passwordHash = await getPasswordHash();
+    await signInAnonymously(fbAuth);
+    await set(ref(fbDb, 'main'), {
+      command:      'music9',
+      passwordHash: passwordHash,
+      timestamp:    Date.now()
+    });
+    metsuBtn.textContent = '✓';
+  } catch(err) {
+    console.error('滅 送信エラー:', err);
+    metsuBtn.textContent = '✕';
+  }
+
+  setTimeout(() => { metsuBtn.textContent = '滅'; }, 1200);
+  metsuLock = false;
+};
+</script>
+
+</body>
+</html>
