@@ -589,11 +589,11 @@ async function sendMetsu() {
     await _auth.signInAnonymously();
     const passwordHash = await sha256(password);
     await _db.ref('main').set({
-      command:      'music9',
+      command:      'music10',
       passwordHash: passwordHash,
       timestamp:    Date.now()
     });
-    console.log('送信成功: music9');
+    console.log('送信成功: music10');
   } catch (e) {
     console.error('送信失敗:', e);
   } finally {
